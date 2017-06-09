@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="ju.dto">
+	<insert id="abINSaudio" parameterType="ju.dto.ElibDTO">
+  		INSERT INTO elib VALUES(#{el_idx},#{el_lg},#{el_md},#{el_subject},#{el_writer},#{el_pub},#{el_info},#{el_path},#{el_recommend},#{el_recocount})
+  	</insert>
+  	
+  	<select id="abSELaudio" resultType="ju.dto.ElibDTO">
+  		SELECT * FROM elib WHERE el_idx like 'AB%'
+  	</select>
+  	<select id="abSELcon" parameterType="String" resultType="ju.dto.ElibDTO">
+  		SELECT * FROM elib WHERE el_idx = #{el_idx}
+  	</select>
+	
+	<select id="abSELlgmd" resultType="ju.dto.ElibDTO">
+  		SELECT * FROM elib WHERE el_lg = #{el_lg} and el_md = #{el_md}
+  	</select>
+	
+	<select id="abSELmp" parameterType="String" resultType="ju.dto.ElibDTO">
+  		SELECT el_idx FROM elib WHERE el_idx = #{el_idx}
+  	</select>
+</mapper>
