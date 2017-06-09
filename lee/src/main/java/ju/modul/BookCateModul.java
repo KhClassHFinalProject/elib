@@ -22,8 +22,8 @@ public class BookCateModul {
 			case 5 : eb_lgStr="언어"; break;
 			case 6 : eb_lgStr="문학"; break;
 			case 7 : eb_lgStr="역사"; break;
-			case 8 : eb_lgStr="교육"; break;
-			case 9 : eb_lgStr="잡지"; break;
+			case 8 : eb_lgStr="잡지"; break;
+			case 9 : eb_lgStr="교육"; break;
 			default : eb_lgStr="Err"; break;
 		}
 		return eb_lgStr;
@@ -162,23 +162,23 @@ public class BookCateModul {
 	
 	private ArrayList<String> Md_8() {
 		eb_mdList=new ArrayList<String>();
-		eb_mdList.add("국어");
-		eb_mdList.add("수학");
-		eb_mdList.add("언어");
-		eb_mdList.add("한국사");
-		eb_mdList.add("사회/사회탐구");
-		eb_mdList.add("과학/과학탐구");
-
-		return eb_mdList;
-	}
-	
-	private ArrayList<String> Md_9() {
-		eb_mdList=new ArrayList<String>();
 		eb_mdList.add("경제");
 		eb_mdList.add("스포츠");
 		eb_mdList.add("리빙");
 		eb_mdList.add("여행");
 		eb_mdList.add("기타");
+		return eb_mdList;
+	}
+	
+	private ArrayList<String> Md_9() {
+		eb_mdList=new ArrayList<String>();
+		eb_mdList.add("국어");
+		eb_mdList.add("수학");
+		eb_mdList.add("영어");
+		eb_mdList.add("한국사");
+		eb_mdList.add("사회/사회탐구");
+		eb_mdList.add("과학/과학탐구");
+		
 		return eb_mdList;
 	}
 	

@@ -12,7 +12,7 @@ import ju.modul.BookCateModul;
 
 @Controller
 public class EbookController {
-
+	
 	/** 전자도서관 메인 */
 	@RequestMapping(value="ebookMain.ju")
 	public ModelAndView eMain() {
@@ -20,15 +20,6 @@ public class EbookController {
 		mav.setViewName("ebook/ebookMain");
 		return mav;
 	}
-	
-	/**뷰어*/
-	@RequestMapping(value="eViewer.ju")
-	public ModelAndView eViewer() {
-		ModelAndView mav=new ModelAndView();
-		mav.setViewName("ebook/eViewer");
-		return mav;
-	}
-	
 	
 	/**전자도서 메인*/
 	@RequestMapping(value="ebook.ju")
@@ -41,8 +32,6 @@ public class EbookController {
 		mav.setViewName("ebook/ebook");
 		return mav;
 	}
-
-	
 	
 	/**최초 접근 검색내용*/
 	@RequestMapping(value="ebookFirst.ju")
@@ -68,8 +57,6 @@ public class EbookController {
 		mav.setViewName("juJson");
 		return mav;
 	}
-	
-	
 	
 	/**단순 검색*/
 	@RequestMapping(value="ebookSimpleSearch.ju")
@@ -97,7 +84,6 @@ public class EbookController {
 		mav.setViewName("juJson");
 		return mav;
 	}
-	
 	
 	/**상세 검색*/
 	@RequestMapping(value="ebookDetailSearch.ju")
@@ -134,28 +120,26 @@ public class EbookController {
 		return mav;
 	}
 	
-	
-	
 	/**소분류 고침 Ajax*/
 	@RequestMapping(value="ebookCate.ju")
 	public ModelAndView ebookCate(@RequestParam(value="cateLgVal", defaultValue="0")int cateLgVal) {
 		BookCateModul bcm=new BookCateModul();
 		ArrayList<String> cateMd=bcm.BookMdArr(cateLgVal);
+		
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("cateMd", cateMd);
 		mav.setViewName("juJson");
 		return mav;
 	}
 	
-	
 	/**전자도서 컨텐츠 선택*/
 	@RequestMapping(value="ebookContent.ju")
-	public ModelAndView ebookContent(@RequestParam(value="bk_idx", defaultValue="0")String bk_idx) {
+	public ModelAndView ebookContent(@RequestParam(value="el_idx", defaultValue="0")String el_idx) {
 		
 		ArrayList<ElibDTO> ebArr=new ArrayList<ElibDTO>(); 
 		ElibDTO ebDTO=null;
 		ebDTO=new ElibDTO();
-		ebDTO.setEl_idx(bk_idx);
+		ebDTO.setEl_idx(el_idx);
 		ebArr.add(ebDTO);
 		
 		ModelAndView mav=new ModelAndView();
@@ -199,16 +183,5 @@ public class EbookController {
 		mav.setViewName("juJson");
 		return mav;
 	}
-	
-	
-	/**전자도서 컨텐츠 선택 삭제예정*/
-	@RequestMapping(value="ebookSelect.ju")
-	public ModelAndView ebookSelect() {
-		ModelAndView mav=new ModelAndView();
-		mav.setViewName("ebook/ebookSelect");
-		return mav;
-	}
-
-	
 	
 }

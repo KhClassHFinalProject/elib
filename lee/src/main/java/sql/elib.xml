@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="ju.elib">
+
+	<insert id="elibINSelib" parameterType="ju.dto.ElibDTO">
+		INSERT INTO elib VALUES( #{el_idx}, #{el_lg}, #{el_md}, #{el_subject}, #{el_writer}, #{el_pub}, #{el_info}, #{el_path}, #{el_recommend}, #{el_recocount} )
+	</insert>
+	
+	<select id="elibSELfir" parameterType="String" resultType="ju.dto.ElibDTO">
+		SELECT * FROM (
+								SELECT rownum rnum, data.*  FROM 
+																				(
+																				SELECT * FROM elib WHERE el_idx LIKE '${idxParam}%' ORDER BY ${orderName}
+																				)data
+								)
+								WHERE rnum BETWEEN ${startNum} AND ${endNum}
+	</select>
+	
+	<select id="elibSElfirCount" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM elib WHERE el_idx LIKE '${idxParam}%'
+	</select>
+	
+	<select id="elibSELcon" parameterType="String" resultType="ju.dto.ElibDTO">
+		SELECT * FROM elib WHERE el_idx=#{el_idx}
+	</select>
+	
+	<select id="elibSELsimple" parameterType="String" resultType="ju.dto.ElibDTO">
+		SELECT * FROM (
+								SELECT rownum rnum, data.*  FROM 
+																				(
+																				SELECT * FROM elib WHERE el_idx LIKE '${idxParam}%' AND el_subject LIKE '%${simpleSearchText}%' ORDER BY ${orderName}
+																				)data
+								)
+								WHERE rnum BETWEEN ${startNum} AND ${endNum}
+	</select>
+	
+	<select id="elibSELsimpleCount" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM elib WHERE el_idx LIKE '${idxParam}%' AND el_subject LIKE '%${simpleSearchText}%' ORDER BY ${orderName}
+	</select>
+	
+	<select id="elibSELdetail" parameterType="String" resultType="ju.dto.ElibDTO">
+		SELECT * FROM (
+								SELECT rownum rnum, data.*  FROM 
+																				(
+																				SELECT * FROM elib WHERE  el_idx LIKE '${idxParam}%' ${where} ORDER BY ${orderName}
+																				)data
+								)
+								WHERE rnum BETWEEN ${startNum} AND ${endNum}
+	</select>
+	
+	<select id="elibSELdetailCount" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM elib WHERE  el_idx LIKE '${idxParam}%' ${where} ORDER BY ${orderName}
+	</select>
+	
+	<select id="elibSELview" parameterType="String" resultType="ju.dto.ElibDTO">
+		SELECT * FROM elib WHERE  el_idx=#{el_idx}
+	</select>
+
+</mapper>
