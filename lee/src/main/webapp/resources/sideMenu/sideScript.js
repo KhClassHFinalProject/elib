@@ -5,7 +5,7 @@ $(document).ready(function(){
 
 
 	$('#cssmenu li.has-sub>a').on('click', function(){
-		//$(this).removeAttr('href');
+		/*$(this).removeAttr('href');*/
 		var element = $(this).parent('li');
 		if (element.hasClass('open')) {
 			element.removeClass('open');
