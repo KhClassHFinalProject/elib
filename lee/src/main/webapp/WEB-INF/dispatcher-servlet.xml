@@ -52,6 +52,9 @@
 	<bean id="elibDAO" class="ju.elib.model.ElibDAOImple" >
 		<constructor-arg  ref="sqlSessionTemplate" />
 	</bean>
+	<bean id="audioDao" class="ju.audiobook.model.AudioDAOImple">
+		<constructor-arg  ref="sqlSessionTemplate" />
+	</bean>
 	
 	<bean id="viewResoLver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />

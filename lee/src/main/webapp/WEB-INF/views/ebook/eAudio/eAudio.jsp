@@ -48,6 +48,7 @@
 <script type="text/javascript"
 	src="/lee/resources/bootstrapk/js/bootstrap.min.js"></script>
 <script type="text/javascript">
+
 function aPlayer(el_idx){//오디오플레이어 팝업
 				var popURL = "aPlayer.ju?el_idx="+el_idx+"";
 				var popOption = "width=480, height=360, resizable=no, scrollbars=yes, status=no;";
@@ -621,6 +622,7 @@ function aPlayer(el_idx){//오디오플레이어 팝업
 						</tr>
 					</tfoot>
 				</table>
+									<div><a href="/lee/eAudioAdd.ju">임시 오디오 관리</a></div>
 			</div>
 			<!-- 검색리스트 End-->
 
