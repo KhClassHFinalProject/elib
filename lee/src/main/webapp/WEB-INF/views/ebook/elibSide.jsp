@@ -149,7 +149,7 @@
 			   	 </ul>
 			   	 
 			   </li> 
-			   <li class='has-sub' id="emList"><a href='#/lee/eMagazine.ju'>전자 잡지</a> <!--1단  -->
+			   <li class='has-sub' id="emList"><a href='/lee/eMagazine.ju'>전자 잡지</a> <!--1단  -->
 			      <ul>
 			         <li><a href="#" onclick="return false" data-md="0" >경제</a></li>		         
 			         <li><a href="#" onclick="return false" data-md="1" >리빙</a></li>
@@ -293,7 +293,7 @@
 			   </li>
 			   
 			   
-			   <li class='has-sub' id="eduList"><a href='#eEdu.ju'>e-교육</a>
+			   <li class='has-sub' id="eduList"><a href='/lee/eEdu.ju'>e-교육</a>
 			   		<ul>
 				         <li><a href="#" onclick="return false" data-md="0" >국어</a></li>		         
 				         <li><a href="#" onclick="return false" data-md="1" >수학</a></li>

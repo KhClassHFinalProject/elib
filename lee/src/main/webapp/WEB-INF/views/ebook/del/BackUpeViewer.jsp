@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,12 +23,6 @@
 		#zoomDiv>button, #zoomDiv>button:HOVER{
 			opacity: 1
 		}
-		nav>div{
-			padding: 5% 0;
-		}
-		.btn-link{
-			color: red;
-		}
 	</style>
     
 	<script type="text/javascript" src="/lee/resources/js/jquery-3.2.1.min.js"></script>
@@ -41,6 +34,11 @@
 	<script type="text/javascript" src="/lee/resources/eViewer/booklet/jquery.easing.1.3.js"></script>
 	<script type="text/javascript" src="/lee/resources/eViewer/booklet/jquery.booklet.latest.js"></script>
 	
+	<!-- left -->
+	<link rel="stylesheet" href="/lee/resources/eViewer/leftSide/font-awesome.css">
+	<link rel="stylesheet" href="/lee/resources/eViewer/leftSide/iconmenu.css">
+	<script type="text/javascript" src="/lee/resources/eViewer/leftSide/changeiconmenu.js"></script>
+	
 	<!-- right -->
 	<link rel="stylesheet" href="/lee/resources/eViewer/jPushMenu/jPushMenu.css?v=2" type="text/css" >
 	<script type="text/javascript" src="/lee/resources/eViewer/jPushMenu/jPushMenu.js"></script>
@@ -50,8 +48,6 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			window.moveTo(0,0);
-			
 			//single book
 			$('#mybook').booklet(
 				{
@@ -62,7 +58,7 @@
 					, arrows: true
 					, arrowsHide: true
 					, hash: true					/*#/page/1*/
-					, name : $("body").data("subject")
+					, name : "test"
 					, next: "#customNext"
 					, prev: "#customPrev"
 					, menu: "#customMenu"
@@ -95,97 +91,29 @@
 			);
 			$("#customEnd").click(
 				function() {
-					location.href="#/page/" + $("#customEnd").data("end");
+					alert("할수있음");
+					location.href="#/page/3";
 				}
 			);
 			
 			/*북마크 만들기*/
+			//ajax부분
 			function bookMakerLi(endMaker) {
-				var bookMarkerList=$("#bookMarkUl").html();
-				var nowBookMarkCount=$("#bookMarkUl>div").length;
-				var endMakerPage=endMaker.split("/");
-				bookMarkerList+='<div class="form-group">';
-				bookMarkerList+='	<button type="button" class="btn btn-default"  role="button" data-maker="' + endMaker + '">' + endMakerPage[2] + ' 페이지</button>';
-				bookMarkerList+='	<button type="button" class="btn btn-link">';
-				bookMarkerList+='		<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-				bookMarkerList+='	</button>';
-				bookMarkerList+='</div>';
+				$("#bookMarkUl").html("");
+				var bookMarkerList="";
+				for(var i=1 ; i<=endMaker ; i++){
+					bookMarkerList+="<a class='btn btn-default'  href='#/bookmark/" + i + " role='button'>북마크 " + i +"</a>"
+				}
 				$("#bookMarkUl").html(bookMarkerList);
-				bookMakerGo();
-				bookMakerDelet();
 			}
-			bookMakerLi("#/page/1");
-			bookMakerLi("#/page/3");
-			
-			/*ebook일경우만 북마크 존재*/
-			//수정?
-			var param=document.location.search.split("=");;
-			var idxName=param[1].slice(0, 2).toUpperCase();
-			if(idxName!="EB"){
-				$("#bookmarker").parent().remove();
-				$("#bookMarkUl").remove();
-			}
-			/*북마크 등록*/
+			bookMakerLi(2);
 			$("#bookmarker").click(
 				function() {
-					var thisHref=$(location).attr("href");
-					var thisPages=$(location).attr("href").split("#");
-					var thisPage="#"+thisPages[1];
-					var buttonEven=$(".form-group>button:even");
-					if(buttonEven.length>=6){//6으로 변경할 것
-						alert("북마크 최대는 6개 입니다.");
-						return null;
-					}
-					else{
-						for(var i=0 ; i<buttonEven.length ; i++){
-							if(buttonEven.eq(i).data("maker")==thisPage){
-								alert("이미 추가된 페이지 입니다.");
-								return null;
-							}
-						}
-						$.ajax({
-							type : "GET"
-			    			, url : "eViewerBookMakerAdd.ju"
-			    			, data : {page : thisPage}
-			    			, dataType : "json"
-			    			, success: function(data){
-								alert("현재 페이지가 북마크에 추가 되었습니다.");
-								bookMakerLi(thisPage);
-			    			} // success
-						}); // ajax
-					} // else
-				} // function
+					alert("아직 안되지롱!!");
+					 var result = Math.floor(Math.random() * 10) + 1;
+					bookMakerLi(result);
+				}
 			);
-			/*북마크 클릭*/
-			function bookMakerGo() {
-				$("#bookMarkUl>div>.btn-default").click(
-					function() {
-						var bookMakerIndex=$("#bookMarkUl>div>.btn-default").index(this);
-						location.href=$("#bookMarkUl>div>.btn-default").eq(bookMakerIndex).data("maker");
-					}
-				);
-			}
-			/*북마크 삭제*/
-			function bookMakerDelet() {
-				$(".btn-link").click(
-					function() {
-						var deletMakerNum=$(".btn-link").index(this);
-						var thisPage=$(".form-group:eq(" + deletMakerNum + ")>button").eq(0).data("maker");
-						var deletBoolean=confirm("해당 북마크가 삭제 됩니다.\n삭제하시겠습니까?");
-						if(deletBoolean){
-							$.ajax({
-								type : "GET"
-				    			, url : "eViewerBookMakerDel.ju"
-				    			, data : {page : thisPage}
-				    			, dataType : "json"
-				    			, success: function(data){
-									$(".form-group").eq(deletMakerNum).remove();
-				    			} // success
-							}); // ajax
-						} // if
-					} // function
-				);
-			}
 			
 			/*휠 줌인 줌아웃*/
 			wheelzoom(document.querySelectorAll("img"), {zoom:0.05});
@@ -236,56 +164,28 @@
 				}
 			);
 			
-			/*모달*/
-			var idx=$("body").data("idx");
-			if(idx.indexOf("EB")==0){ //전자도서
-				/*마지막쪽 읽고 #/page/1이면 안켬*/
-				$("#endModal").modal("show");
-				$(".modal-footer>.btn-primary").click(
-					function() {
-						location.href="#/page/";
-					}
-				);
-			}
-			
 		}); // 기본 함수
+		
+		/*왼쪽 메뉴바*/
+		ddiconmenu.docinit(
+			{
+				menuid : "myiconmenu"
+				, easing : "easeInOutCirc"
+				, dur : 500
+				, tigger : " mouseover"
+			}
+		);
 		
 	    $(window).on("beforeunload"
 	    	, function(){
-	    		var thisHref=$(location).attr("href");
-				var thisPages=$(location).attr("href").split("#");
-				var thisPage="#"+thisPages[1];
-	    		$.ajax({
-	    			type : "GET"
-	    			, url : "eViewerEndMaker.ju"
-	    			, data : {endPage : thisPage}
-	    			, dataType : "json"
-	    			, success: function(data){
-	    			}
-	    		});
+	        	$("#close").text("??");
+	        	return null;
 	    	}
 	    );
 	</script>
 	
 </head>
-<body data-subject="${elibArr.el_subject }" data-idx="${elibArr.el_idx }">
-<!-- 빌린책 마지막쪽 심기 -->
-	<div class="modal fade" id="endModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			 <div class="modal-content">
-				<div class="modal-body">
-					<div>마지막에 읽은 페이지가 있습니다.</div> 
-					<div>이동 하시겠습니까?</div>
-					<div>마지막으로 읽은 페이지 : </div>
-				</div>
-		   <div class="modal-footer">
-				<button type="button" class="btn btn-primary">이동</button>
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-			</div>
-			</div>
-		</div>
-	</div>
-
+<body>
 	<div id="control">
 		<button type="button" class="btn btn-default" name="customStart" id="customStart">
 			<span class="glyphicon glyphicon-step-backward" aria-hidden="true">맨앞</span>
@@ -305,7 +205,7 @@
 		<button type="button" class="btn btn-default" name="customNext" id="customNext">
 			다음<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		</button>
-		<button type="button" class="btn btn-default" name="customEnd" id="customEnd" data-end="${endPage }">
+		<button type="button" class="btn btn-default" name="customEnd" id="customEnd">
 			맨뒤<span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
 		</button>
 		
@@ -313,11 +213,53 @@
 	</div>
 	
 	<div id="mybook">
-		<c:forEach var="getImgPath" items="${imgPath}">
-			<div><img src="${getImgPath }" width="570px" height="750px"></div>
-		</c:forEach>
-		</div>
+		<div><img src="/lee/resources/ebook/testImg/pages/01.jpg"></div>
+		<div><img src="/lee/resources/ebook/testImg/pages/02.jpg"></div>
+		<div><img src="/lee/resources/ebook/testImg/pages/03.jpg"></div>
+		<div><img src="/lee/resources/ebook/testImg/pages/04.jpg"></div>
+		<div><img src="/lee/resources/ebook/testImg/pages/05.jpg"></div>
+		<div><img src="/lee/resources/ebook/testImg/pages/06.jpg"></div>
+		<div><img src="/lee/resources/ebook/testImg/pages/01.jpg"></div>
+	</div>
 	
+	<!-- Main Icon Menu -->
+	<!-- <ul id="myiconmenu" class="iconmenu">
+		<li><a class="" href="#" rel="csslibrary" title="목록"><span class="glyphicon glyphicon-list" aria-hidden="true"></span></a></li>
+		<li><a class="" href="#" rel="ddcontentarea" title="북마크"><span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span></a></li>
+	</ul>
+
+	CSS Library sub menu
+	<div id="csslibrary" class="iconsubmenu dropdownmenu">
+		<ul class="ulmenu">
+			<li><a href="#/page/1">시작페이지</a></li>
+			<li><a href="#/chapter1">Chapter 1</a></li>
+			<li><a href="#/chapter2">Chapter 2</a></li>
+			<li><a href="#/chapter3">Chapter 3</a></li>
+			<li><a href="#/chapter4">Chapter 4</a></li>
+			<li><a href="#/chapter5">Chapter 5</a></li>
+			<li><a href="#/page/7">마지막페이지</a></li>
+		</ul>
+	</div>
+
+	General Content sub menu
+	<div id="ddcontentarea" class="iconsubmenu mixedcontent">
+		<p style="margin:5px 0 10px 0"><button class="btn btn-default" type="button" name="bookmarker" id="bookmarker">북마크 등록</button></p>
+		
+		<div class="column" id="bookMarkUl">
+			<ul id="bookMarkUl">
+				<li><a href="#/bookmark/1">북마크 1</a></li>
+				<li><a href="#/bookmark/2">북마크 2</a></li>
+				<li><a href="#/bookmark/3">북마크 3</a></li>
+				<li><a href="#/bookmark/3">북마크 4</a></li>
+				<li><a href="#/bookmark/3">북마크 5</a></li>
+				<li><a href="#/bookmark/3">북마크 6</a></li>
+				<li><a href="#/bookmark/3">북마크 7</a></li>
+				<li><a href="#/bookmark/3">북마크 8</a></li>
+			</ul>
+		</div>
+	</div> -->
+	
+
 	<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-right">
 		<h3 class="text-center" id="Inconfig">설정</h3>
 		<div class="text-center" id="zoomDiv">
@@ -334,9 +276,6 @@
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" name="pagegoSub" id="pagegoSub">이동</button>
 			</span>
-		 </div>
-		 <div class="row text-center">
-		 	<button class="btn btn-default" type="button" name="bookmarker" id="bookmarker">북마크 등록</button>
 		 </div>
 		 <div class="text-center" id="bookMarkUl">
 		 </div>

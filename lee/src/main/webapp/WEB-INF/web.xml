@@ -10,31 +10,30 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   
-  <servlet>
-<servlet-name>dispatcher</servlet-name>
-<!-- memory path -->
-<servlet-class>
-org.springframework.web.servlet.DispatcherServlet
-</servlet-class>
-</servlet>
-<servlet-mapping>
-<servlet-name>dispatcher</servlet-name>
-<url-pattern>*.ju</url-pattern>
-</servlet-mapping>
-<filter> <!-- dispatcher -->
-<filter-name>encodingFilter</filter-name>
-<filter-class>
-org.springframework.web.filter.CharacterEncodingFilter
-</filter-class>
-<init-param>
-<param-name>encoding</param-name> <!-- donʼt change!!!!! -->
-<param-value>utf-8</param-value>
-</init-param>
-</filter>
-<filter-mapping>
-<filter-name>encodingFilter</filter-name>
-<url-pattern>/*</url-pattern>
-</filter-mapping>
-  
+	<!-- memory path -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.ju</url-pattern>
+	</servlet-mapping>
+
+	<!-- dispatcher -->
+	<filter> 
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
   
 </web-app>

@@ -2,66 +2,66 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans.xsd 
-	http://www.springframework.org/schema/context 
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+								http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+								http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
+	<!-- <context:component-scan base-package="my.schedule"/> -->
+	<task:annotation-driven/>
 	
 	<!-- config -->
-	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
-	
 	<context:component-scan base-package="ju" use-default-filters="false">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+	<!-- 10MB -->
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="104857600"/>
+		<property name="maxUploadSize" value="104857600" />
 	</bean>
-	
-	
+
 	<!-- Spring and MyBatis linkage -->
 	<!-- 1.dataSource -->
-	<!-- dataSource -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@yongstudy.iptime.org:9000:orcl"/>
-		<property name="username" value="project02_01"/>
-		<property name="password" value="project02_01"/>
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@yongstudy.iptime.org:9000:orcl" />
+		<property name="username" value="project02_01" />
+		<property name="password" value="project02_01 " />
 	</bean>
 	
 	<!-- 2.transaction Manager join -->
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
-		<property name="dataSource" ref="dataSource"/>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
 	<!-- 3.MyBatis setting -->
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource"/>
-		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
 	</bean>
-	
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"/>
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean" />
 	</bean>
-	
-	<!-- service -->	
-	<bean id="audioDao" class="ju.audiobook.model.AudioDAOImple">
-		<constructor-arg ref="sqlSessionTemplate"/>
-	</bean>
-	
+
 	<!-- view -->
-	<bean id="viewResoLver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/views/"/>
-		<property name="suffix" value=".jsp"/>
-		<property name="order" value="1"/>
+	<bean id="juJson" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+	
+	<!-- service -->
+	<bean id="elibDAO" class="ju.elib.model.ElibDAOImple" >
+		<constructor-arg  ref="sqlSessionTemplate" />
 	</bean>
 	
-	<bean id="juJson" class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"/>
+	<bean id="viewResoLver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/" />
+		<property name="suffix" value=".jsp" />
+		<property name="order" value="1" />
+	</bean>
 	
 	<!-- it needs File download -->
-		<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
-			<property name="order" value="0"></property>
-		</bean>
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="0" />
+	</bean>
 
 </beans>
